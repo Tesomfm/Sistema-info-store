@@ -18,11 +18,13 @@ public class Cliente extends PessoaAbstract implements Observer, Serializable {
         this.notificacoes = new ArrayList<>();
     }
 
-    public void adicionarAListaDesejo(ProdutoAbstract p) {
+    public void adicionarAListaDesejo(ProdutoAbstract p, boolean cond) {
         if (!listaDeDesejo.contains(p)) {
             listaDeDesejo.add(p);
             p.addObserver(this);
-            System.out.println(p.getNome() + " adicionado à sua lista de desejos!");
+            if  (cond) {
+                System.out.println(p.getNome() + " adicionado à sua lista de desejos!");
+            }
         }
     }
 
@@ -42,11 +44,13 @@ public class Cliente extends PessoaAbstract implements Observer, Serializable {
         return this.listaDeDesejo;
     }
 
-    public void removerDaListaDesejo(ProdutoAbstract p) {
+    public void removerDaListaDesejo(ProdutoAbstract p, boolean cond) {
         if (listaDeDesejo.contains(p)) {
             listaDeDesejo.remove(p);
             p.removeObserver(this);
-            System.out.println(p.getNome() + " foi removido da sua lista de desejos!");
+            if (cond){
+                System.out.println(p.getNome() + " foi removido da sua lista de desejos!");
+        }
         }
         else {
             System.out.println(p.getNome() + " não está na lista de desejos!");
@@ -54,16 +58,16 @@ public class Cliente extends PessoaAbstract implements Observer, Serializable {
     }
 
     @Override
-    public void update(ProdutoAbstract produto, Object tipoNotificacao) {// criar classe "tipoNotificacao"
+    public void update(ProdutoAbstract produto, String tipoNotificacao) {
         if (notificacoes == null) {
             notificacoes = new ArrayList<>();
         }
 
         if (listaDeDesejo.contains(produto)) {
             String msg = "";
-            if ("stock_back".equals(tipoNotificacao)) {
+            if ("estoque_voltou".equals(tipoNotificacao)) {
                 msg = String.format("BOA NOTÍCIA! O produto '%s' da sua lista de desejos está de volta ao estoque!", produto.getNome());
-            } else if ("price_drop".equals(tipoNotificacao)) {
+            } else if ("preco_caiu".equals(tipoNotificacao)) {
                 msg = String.format("O PREÇO CAIU! O produto '%s' da sua lista de desejos está custando R$ %.2f!", produto.getNome(), produto.getPreco());
             }
 

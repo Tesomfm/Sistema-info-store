@@ -59,7 +59,7 @@ public class LojaDeInformatica implements Serializable {
         ProdutoAbstract p = buscarProduto(nomeProduto);
         if (p != null) {
             int qtdAntiga = p.getQuantidadeEmEstoque();
-            p.setQuantidadeEmEstoque(qtdAntiga + quantidade); // Isso vai disparar o main.java.Observer
+            p.setQuantidadeEmEstoque(qtdAntiga + quantidade);
             salvarEstoque();
             System.out.printf("Estoque de '%s' atualizado para %d unidades.\n", nomeProduto, p.getQuantidadeEmEstoque());
         } else {
@@ -70,7 +70,7 @@ public class LojaDeInformatica implements Serializable {
     public void alterarPreco(String nomeProduto, double novoPreco) {
         ProdutoAbstract p = buscarProduto(nomeProduto);
         if (p != null) {
-            p.setPreco(novoPreco); // Isso vai disparar o main.java.Observer
+            p.setPreco(novoPreco);
             salvarEstoque();
             System.out.printf("Preço de '%s' atualizado para R$ %.2f.\n", nomeProduto, novoPreco);
         } else {

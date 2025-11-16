@@ -38,8 +38,8 @@ public class LojaFacade {
         for(ProdutoAbstract ProdutoListaDesejo : new ArrayList<>(cliente.getListaDeDesejo())) {
             for (ProdutoAbstract produtoEstoque : ProdutosDoEstoque) {
                 if (ProdutoListaDesejo.getNome().equals(produtoEstoque.getNome())) {
-                    cliente.removerDaListaDesejo(ProdutoListaDesejo);
-                    cliente.adicionarAListaDesejo(produtoEstoque);
+                    cliente.removerDaListaDesejo(ProdutoListaDesejo, false);
+                    cliente.adicionarAListaDesejo(produtoEstoque, false);
                     break;
                 }
             }
@@ -129,7 +129,7 @@ public class LojaFacade {
         }
         ProdutoAbstract p = loja.buscarProduto(nomeProduto);
         if (p != null) {
-            ((Cliente) usuarioLogado).adicionarAListaDesejo(p);
+            ((Cliente) usuarioLogado).adicionarAListaDesejo(p,true);
         } else {
             System.out.println("Erro: Produto não encontrado no estoque.");
         }
@@ -141,5 +141,18 @@ public class LojaFacade {
             return;
         }
         ((Cliente) usuarioLogado).verListaDeDesejo();
+    }
+    public boolean verificadorDeNome(String nome) {
+        if((auth.validar(nome))){
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean AutenticadorDeCpf(String cpf) {
+        if(auth.validador(cpf)){
+            return true;
+        }
+        else return false;
     }
 }

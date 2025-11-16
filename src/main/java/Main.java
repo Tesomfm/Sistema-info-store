@@ -59,10 +59,8 @@ public class Main {
     }
 
     private static void registrarCliente() {
-        System.out.print("Nome completo: ");
-        String nome = sc.nextLine();
-        System.out.print("CPF: ");
-        String cpf = sc.nextLine();
+        String nome = solicitadorNome(sc,"Nome completo: ");
+        String cpf = solicitadorCpf(sc,"Insira o CPF: ");
         System.out.print("Login (nome de usuário): ");
         String login = sc.nextLine();
         System.out.print("Senha: ");
@@ -151,8 +149,7 @@ public class Main {
         facade.consultarEstoque();
         System.out.print("Digite o nome do produto que deseja comprar: ");
         String nome = sc.nextLine();
-        System.out.print("Digite a quantidade: ");
-        int qtd = lerInt();
+        int qtd = solicitadorQnt(sc,"Digite a quantidade: ");
         facade.comprarProduto(nome, qtd);
     }
 
@@ -168,10 +165,8 @@ public class Main {
         String tipo = sc.nextLine();
         System.out.print("Nome do produto: ");
         String nome = sc.nextLine();
-        System.out.print("Preço (ex: 450.99): ");
-        double preco = lerDouble();
-        System.out.print("Quantidade inicial: ");
-        int qtd = lerInt();
+        double preco = solicitarPreco(sc, "Preço (ex: 450.99): ");
+        int qtd = solicitadorQnt(sc,"Quantidade a inicial: ");
         String esp;
         if (tipo.equalsIgnoreCase("componente")) {
             System.out.print("Fabricante (ex: Intel, AMD): ");
@@ -190,8 +185,7 @@ public class Main {
         facade.consultarEstoque();
         System.out.print("Digite o nome do produto para adicionar estoque: ");
         String nome = sc.nextLine();
-        System.out.print("Quantidade a adicionar: ");
-        int qtd = lerInt();
+        int qtd = solicitadorQnt(sc, "quantidade a ser adicionada:");
         facade.adicionarEstoque(nome, qtd);
     }
 
@@ -199,8 +193,7 @@ public class Main {
         facade.consultarEstoque();
         System.out.print("Digite o nome do produto para alterar o preço: ");
         String nome = sc.nextLine();
-        System.out.print("Digite o novo preço: ");
-        double preco = lerDouble();
+        double preco = solicitarPreco(sc,"Digite o novo preço: ");
         facade.alterarPreco(nome, preco);
     }
 
@@ -217,16 +210,69 @@ public class Main {
         }
     }
 
-    private static double lerDouble() {
-        while (true) {
-            try {
-                double val = sc.nextDouble();
+    private static int solicitadorQnt(Scanner sc, String mensagem ){
+        int qut = -8;
+        boolean qutisvalid = false;
+        do{
+            System.out.print(mensagem);
+            if(sc.hasNextInt()) {
+                qut = sc.nextInt();
                 sc.nextLine();
-                return val;
-            } catch (InputMismatchException e) {
-                System.out.print("Entrada inválida. Digite um número (ex: 120.50): ");
+                qutisvalid = true;
+            }else {
                 sc.nextLine();
+                System.out.println("Quantidade inválida! Digite novamente.");
             }
-        }
+        }while (!qutisvalid);
+        return qut;
+    }
+
+    private static double solicitarPreco(Scanner sc,String mensagem ){
+        double preco = -4;
+        boolean precovalido = false;
+        do{
+            System.out.print(mensagem);
+            if(sc.hasNextDouble()){
+                preco = sc.nextDouble();
+                sc.nextLine();
+                precovalido = true;
+            }else {
+                sc.nextLine();
+                System.out.println("Preço inválido! Digite novamente.");
+            }
+        }while (!precovalido);
+        return preco;
+    }
+
+    private static String solicitadorNome(Scanner sc, String mensagem){
+        String nome = "";
+        boolean nomeValido = false;
+
+        do {
+            System.out.print(mensagem);
+            nome = sc.nextLine();
+            if (facade.verificadorDeNome(nome)) {
+                nomeValido = true;
+            } else {
+                System.out.println("Nome inválido! Digite apenas letras.");
+            }
+        } while (!nomeValido);
+        return nome;
+    }
+
+    private static String solicitadorCpf(Scanner sc,String mensagem ){
+        String cpf = "";
+        boolean cpfValido = false;
+        do {
+            System.out.print(mensagem);
+            cpf = sc.nextLine();
+            if (facade.AutenticadorDeCpf(cpf)) {
+                cpfValido = true;
+            }else {
+                System.out.println("CPF inválido! Tente novamente.");
+            }
+        } while (!cpfValido);
+
+        return cpf;
     }
 }

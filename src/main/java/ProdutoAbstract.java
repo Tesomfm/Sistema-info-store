@@ -27,14 +27,14 @@ public abstract class ProdutoAbstract implements Serializable {
 
     public void setPreco(double preco) {
         if (this.preco > preco) {
-            notifyObservers("price_drop");
+            notifyObservers("preco_caiu");
         }
         this.preco = preco;
     }
 
     public void setQuantidadeEmEstoque(int quantidadeEmEstoque) {
         if (this.quantidadeEmEstoque == 0 && quantidadeEmEstoque > 0) {
-            notifyObservers("stock_back");
+            notifyObservers("estoque_voltou");
         }
         this.quantidadeEmEstoque = quantidadeEmEstoque;
     }
