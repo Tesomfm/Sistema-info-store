@@ -68,12 +68,14 @@ public class LojaFacade {
                 System.out.println("Nenhuma notificação nova.");
                 return;
             }
-            System.out.println("\n--- SUAS NOTIFICAÇÕES ---");
-            for(String msg : notificacoes) {
-                System.out.println("- " + msg);
+            else {
+                System.out.println("\n--- SUAS NOTIFICAÇÕES ---");
+                for (String msg : notificacoes) {
+                    System.out.println("- " + msg);
+                }
+                cliente.limparNotificacoes();
+                System.out.println("---------------------------");
             }
-            cliente.limparNotificacoes();
-            System.out.println("---------------------------");
         }
     }
 

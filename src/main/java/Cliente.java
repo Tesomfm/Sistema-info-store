@@ -73,7 +73,7 @@ public class Cliente extends PessoaAbstract implements Observer, Serializable {
 
             if (!msg.isEmpty()) {
                 notificacoes.add(msg);
-                System.out.println("\n*** Você tem uma nova notificação! ***\n");
+                System.out.println("\n*** Notificação lançada ! ***\n");
             }
         }
     }
@@ -85,7 +85,7 @@ public class Cliente extends PessoaAbstract implements Observer, Serializable {
         return notificacoes;
     }
 
-    public void limparNotificacoes() {
+   public void limparNotificacoes() {
         if (notificacoes != null) {
             notificacoes.clear();
         }

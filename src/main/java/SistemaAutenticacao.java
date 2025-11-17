@@ -64,11 +64,6 @@ public class SistemaAutenticacao implements Serializable {
                 List<String> notificacoes = cliente.getNotificacoes();
                 if (notificacoes != null && !notificacoes.isEmpty()) {
                     System.out.println("\n--- VOCÊ TEM NOVAS NOTIFICAÇÕES ---");
-                    for (String msg : notificacoes) {
-                        System.out.println("- " + msg);
-                    }
-                    cliente.limparNotificacoes();
-                    System.out.println("-------------------------------------\n");
                 }
             }
             return usuario;

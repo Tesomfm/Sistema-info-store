@@ -27,6 +27,7 @@ public abstract class ProdutoAbstract implements Serializable {
 
     public void setPreco(double preco) {
         if (this.preco > preco) {
+            this.preco = preco;
             notifyObservers("preco_caiu");
         }
         this.preco = preco;
