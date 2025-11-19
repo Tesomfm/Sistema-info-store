@@ -46,7 +46,6 @@ public class LojaFacade {
         }
     }
 
-
     public void logout() {
         System.out.println("Fazendo logout... Até logo, " + usuarioLogado.getNome());
         this.usuarioLogado = null;
@@ -83,29 +82,32 @@ public class LojaFacade {
         loja.exibirEstoque();
     }
 
-    public void cadastrarProduto(String tipo, String nome, double preco, int qtd, String especificacao) {
+    public boolean cadastrarProduto(String tipo, String nome, double preco, int qtd, String especificacao) {
         if (getTipoUsuarioLogado() != "funcionario") {
             System.out.println("Erro: Apenas funcionários podem cadastrar produtos.");
-            return;
+            return false;
         }
         ProdutoAbstract p = produtoFactory.criarProduto(tipo, nome, preco, qtd, especificacao);
         loja.adicionarProduto(p);
+        return true;
     }
 
-    public void adicionarEstoque(String nomeProduto, int quantidade) {
+    public boolean adicionarEstoque(String nomeProduto, int quantidade) {
         if (getTipoUsuarioLogado() != "funcionario") {
             System.out.println("Erro: Apenas funcionários podem adicionar estoque.");
-            return;
+            return false;
         }
         loja.adicionarEstoque(nomeProduto, quantidade);
+        return true;
     }
 
-    public void alterarPreco(String nomeProduto, double novoPreco) {
+    public boolean alterarPreco(String nomeProduto, double novoPreco) {
         if (getTipoUsuarioLogado() != "funcionario") {
             System.out.println("Erro: Apenas funcionários podem alterar preços.");
-            return;
+            return false;
         }
         loja.alterarPreco(nomeProduto, novoPreco);
+        return true;
     }
 
     public void verRelatorioVendas() {
@@ -116,24 +118,27 @@ public class LojaFacade {
         loja.exibirRelatorioDeVendas();
     }
 
-    public void comprarProduto(String nomeProduto, int qtd) {
+    public boolean  comprarProduto(String nomeProduto, int qtd) {
         if (getTipoUsuarioLogado() != "cliente") {
             System.out.println("Erro: Apenas clientes podem comprar.");
-            return;
+            return false;
         }
         loja.realizarVenda(nomeProduto, qtd, (Cliente) usuarioLogado);
+        return true;
     }
 
-    public void adicionarProdutoListaDesejo(String nomeProduto) {
+    public boolean adicionarProdutoListaDesejo(String nomeProduto) {
         if (getTipoUsuarioLogado() != "cliente") {
             System.out.println("Erro: Apenas clientes podem ter lista de desejos.");
-            return;
+            return false;
         }
         ProdutoAbstract p = loja.buscarProduto(nomeProduto);
         if (p != null) {
             ((Cliente) usuarioLogado).adicionarAListaDesejo(p,true);
+            return true;
         } else {
             System.out.println("Erro: Produto não encontrado no estoque.");
+            return false;
         }
     }
 
@@ -156,5 +161,12 @@ public class LojaFacade {
             return true;
         }
         else return false;
+    }
+
+    public List<String> getNotificacoesUsuarioLogado() {
+        if ("cliente".equals(getTipoUsuarioLogado())) {
+            return ((Cliente) usuarioLogado).getNotificacoes();
+        }
+        return new ArrayList<>();
     }
 }

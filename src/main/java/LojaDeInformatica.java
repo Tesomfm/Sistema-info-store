@@ -10,12 +10,9 @@ import java.util.List;
 
 public class LojaDeInformatica implements Serializable {
     private static final long serialVersionUID = 1L;
-
     private static LojaDeInformatica instancia;
-
     private List<ProdutoAbstract> estoque;
     private List<String> relatorioDeVendas;
-
     private static final String ARQUIVO_ESTOQUE = "estoque.dat";
     private static final String ARQUIVO_VENDAS = "vendas.dat";
 
@@ -43,38 +40,44 @@ public class LojaDeInformatica implements Serializable {
         return null;
     }
 
-    public void adicionarProduto(ProdutoAbstract produto) {
+    public boolean adicionarProduto(ProdutoAbstract produto) {
         ProdutoAbstract existente = buscarProduto(produto.getNome());
         if (existente != null) {
             System.out.println("Produto já existe. Usando 'adicionarEstoque' no lugar.");
-            adicionarEstoque(produto.getNome(), produto.getQuantidadeEmEstoque());
+            return adicionarEstoque(produto.getNome(), produto.getQuantidadeEmEstoque());
         } else {
             estoque.add(produto);
             salvarEstoque();
             System.out.println("Produto " + produto.getNome() + " cadastrado com sucesso.");
+            return true;
         }
     }
 
-    public void adicionarEstoque(String nomeProduto, int quantidade) {
+    public boolean adicionarEstoque(String nomeProduto, int quantidade) {
         ProdutoAbstract p = buscarProduto(nomeProduto);
         if (p != null) {
             int qtdAntiga = p.getQuantidadeEmEstoque();
             p.setQuantidadeEmEstoque(qtdAntiga + quantidade);
             salvarEstoque();
             System.out.printf("Estoque de '%s' atualizado para %d unidades.\n", nomeProduto, p.getQuantidadeEmEstoque());
+
+            return true;
         } else {
             System.out.println("Erro: Produto não encontrado para adicionar estoque.");
+            return false;
         }
     }
 
-    public void alterarPreco(String nomeProduto, double novoPreco) {
+    public boolean alterarPreco(String nomeProduto, double novoPreco) {
         ProdutoAbstract p = buscarProduto(nomeProduto);
         if (p != null) {
             p.setPreco(novoPreco);
             salvarEstoque();
             System.out.printf("Preço de '%s' atualizado para R$ %.2f.\n", nomeProduto, novoPreco);
+            return true;
         } else {
             System.out.println("Erro: Produto não encontrado para alterar o preço.");
+            return false;
         }
     }
 
